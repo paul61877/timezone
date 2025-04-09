@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>World Clock</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #000000;
+    }
+    .clock-container {
+      text-align: center;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .label {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    .time {
+      font-size: 2rem;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="clock-container">
+    <div class="label">Shanghai</div>
+    <div class="time" id="shanghai"></div>
+  </div>
+
+  <div class="clock-container">
+    <div class="label">Seattle</div>
+    <div class="time" id="seattle"></div>
+  </div>
+
+  <div class="clock-container">
+    <div class="label">San Pedro La Laguna</div>
+    <div class="time" id="sanpedro"></div>
+  </div>
+
+  <div class="clock-container">
+    <div class="label">Baton Rouge</div>
+    <div class="time" id="batonrouge"></div>
+  </div>
+
+  <div class="clock-container">
+    <div class="label">Providence, RI</div>
+    <div class="time" id="providence"></div>
+  </div>
+
+  <script>
+    function updateClocks() {
+      const options = {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      };
+
+      document.getElementById("shanghai").textContent =
+        new Intl.DateTimeFormat('en-US', { ...options, timeZone: 'Asia/Shanghai' }).format(new Date());
+
+      document.getElementById("seattle").textContent =
+        new Intl.DateTimeFormat('en-US', { ...options, timeZone: 'America/Los_Angeles' }).format(new Date());
+
+      document.getElementById("sanpedro").textContent =
+        new Intl.DateTimeFormat('en-US', { ...options, timeZone: 'America/Guatemala' }).format(new Date());
+
+      document.getElementById("batonrouge").textContent =
+        new Intl.DateTimeFormat('en-US', { ...options, timeZone: 'America/Chicago' }).format(new Date());
+
+      document.getElementById("providence").textContent =
+        new Intl.DateTimeFormat('en-US', { ...options, timeZone: 'America/New_York' }).format(new Date());
+    }
+
+    setInterval(updateClocks, 1000);
+    updateClocks(); // run immediately on load
+  </script>
+</body>
+</html>
