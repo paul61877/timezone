@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>World Clock with Cthulhu Countdown</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .clock-row {
+      display: flex;
+      gap: 40px;
+      font-size: 1.5em;
+      margin-bottom: 30px;
+    }
+    .clock-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #countdown {
+      font-size: 2em;
+      margin-top: 30px;
+      color: #00ffcc;
+    }
+  </style>
+</head>
+<body>
+  <div class="clock-row">
+    <div class="clock-box">
+      <div>Shanghai</div>
+      <div id="shanghai"></div>
+    </div>
+    <div class="clock-box">
+      <div>Seattle</div>
+      <div id="seattle"></div>
+    </div>
+    <div class="clock-box">
+      <div>San Pedro</div>
+      <div id="sanpedro"></div>
+    </div>
+    <div class="clock-box">
+      <div>Baton Rouge</div>
+      <div id="batonrouge"></div>
+    </div>
+    <div class="clock-box">
+      <div>Providence</div>
+      <div id="providence"></div>
+    </div>
+  </div>
+  <div id="countdown">Cthulhu: calculating...</div>
+
+  <script>
+    function formatTimeZoneClock(tz) {
+      const date = new Date().toLocaleString("en-US", {
+        timeZone: tz,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
+      return date;
+    }
+
+    function updateClocks() {
+      document.getElementById("shanghai").textContent = formatTimeZoneClock("Asia/Shanghai");
+      document.getElementById("seattle").textContent = formatTimeZoneClock("America/Los_Angeles");
+      document.getElementById("sanpedro").textContent = formatTimeZoneClock("America/Guatemala");
+      document.getElementById("batonrouge").textContent = formatTimeZoneClock("America/Chicago");
+      document.getElementById("providence").textContent = formatTimeZoneClock("America/New_York");
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+      const chicagoNow = new Date(now.toLocaleString("en-US", { timeZone: 'America/Chicago' }));
+
+      // Find the next Wednesday at 8:00 PM
+      let target = new Date(chicagoNow);
+      const dayDiff = (3 - chicagoNow.getDay() + 7) % 7;
+      target.setDate(chicagoNow.getDate() + dayDiff);
+      target.setHours(20, 0, 0, 0); // 8:00 PM
+
+      // If it is Wednesday and already past 8:00 PM, go to next week
+      if (chicagoNow.getDay() === 3 && chicagoNow.getHours() >= 20) {
+        target.setDate(target.getDate() + 7);
+      }
+
+      const diffMs = target - chicagoNow;
+      const hours = Math.floor(diffMs / (1000 * 60 * 60));
+      const minutes = Math.floor((diffMs / (1000 * 60)) % 60);
+      const seconds = Math.floor((diffMs / 1000) % 60);
+
+      document.getElementById("countdown").textContent =
+        `Cthulhu: ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    setInterval(() => {
+      updateClocks();
+      updateCountdown();
+    }, 1000);
+  </script>
+</body>
+</html>
